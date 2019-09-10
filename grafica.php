@@ -7,63 +7,43 @@ public function script(){
 
 
 
-$a = mysqli_query($con, "SELECT (fefut - feact) as op , (feact - fein) as opp
+$a = mysqli_query($con, "SELECT ((fefut - feact)*100)/80 as op , ((feact - fein)*100)/80 as opp
 from calculo
 where id = 1");
 $mf=mysqli_fetch_array($a);
+
 $sobran= $mf['op'];
 $tienes= $mf['opp'];
 
+$b = mysqli_query($con, "SELECT fefut - feact as oppp , feact - fein as opppp
+from calculo
+where id = 1");
+$mmf=mysqli_fetch_array($b);
+$sobrann= $mmf['oppp'];
+$tieness= $mmf['opppp'];
+
+
 $con ->close();
-
+?>
+ <div class="container">
+ <br>
+<h2>Barra de progreso de la vida</h2>
+<br>
+<br>
+<div class="progress">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $tienes ?>%">
+    Has vivido <?php echo  round($tienes); ?>%
+  </div>
+  <div id="a" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $sobran ?>%">
+   Te queda por vivir <?php  echo  round($sobran); ?>%
+  </div>
+</div>
+</div>
  
-
-  ?>
-    <script src="code/highcharts.js"></script>
-    <script src="code/modules/venn.js"></script>
-    <script src="code/modules/exporting.js"></script>
-    
-    
-    <div id="containerr"></div>
-    
-    
-            <script type="text/javascript">
-    Highcharts.chart('containerr', {
-        series: [{
-            type: 'venn',
-            data: [{
-                sets: ['A'],
-                value: <?php echo $sobran?> ,
-                name: 'Años restantes',
-                description: 'Años que te sobran antes de muerte: ' +  <?php echo $sobran ?> 
-            }, {
-                sets: ['B'],
-                value: <?php echo $tienes?> ,
-                name: 'Progreso',
-                description: 'Años que ya nas vivido: ' +  <?php echo $tienes ?> 
-     
-            }, {
-                sets: ['A', 'B'],
-                value: 80
-
-            }]
-        }],
-        tooltip: {
-            headerFormat:
-                '<span style="color:{point.color}">\u2022</span> ' +
-                '<span style="font-size: 14px"> {point.point.name}</span><br/>',
-            pointFormat: '{point.description}<br><span style="font-size: 10px"></span>'
-        },
-        title: {
-            text: 'Grafica de tu tiempo restante'
-            
-        }
-    });
-    
-            </script>
 <?php
-echo "Tienes: $tienes años "."<br>";
-echo "Te sobran: $sobran años "."<br>";
+
+echo "Tienes: $tieness años "."<br>";
+echo "Te sobran: $sobrann años "."<br>";
 
 }
 }
